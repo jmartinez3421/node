@@ -9,35 +9,19 @@ const menuOpt = [
 		choices: [
 			{
 				value: 1,
-				name: `${'1.'.green} Create task`,
+				name: `${'1.'.green} Search city`,
 			},
 			{
 				value: 2,
-				name: `${'2.'.green} List tasks`,
-			},
-			{
-				value: 3,
-				name: `${'3.'.green} List completed tasks`,
-			},
-			{
-				value: 4,
-				name: `${'4.'.green} List pending tasks`,
-			},
-			{
-				value: 5,
-				name: `${'5.'.green} Complete task(s)`,
-			},
-			{
-				value: 6,
-				name: `${'6.'.green} Delete task`,
+				name: `${'2.'.green} History`,
 			},
 			{
 				value: 0,
-				name: `${'0.'.green} Exit\n`,
-			},
+				name: `${'0.'.green} Exit`,
+			}
 		],
 		loop: false,
-		pageSize: 8,
+		pageSize: 3,
 	},
 ];
 
