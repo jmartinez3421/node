@@ -1,0 +1,20 @@
+[
+  {
+    "id": "place.8188885146167790",
+    "name": "Barcelona, Barcelona, Spain",
+    "lng": 2.177432,
+    "lat": 41.382894
+  },
+  {
+    "id": "place.16202945485868490",
+    "name": "Tarragona, Tarragona, Spain",
+    "lng": 1.254606,
+    "lat": 41.117236
+  },
+  {
+    "id": "place.10233989787500920",
+    "name": "Garcia, Tarragona, Spain",
+    "lng": 0.651719,
+    "lat": 41.135892
+  }
+]

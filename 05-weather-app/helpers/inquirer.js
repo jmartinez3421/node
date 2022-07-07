@@ -72,11 +72,11 @@ const readInput = async (message) => {
 	return desc;
 };
 
-const deleteItemFromList = async (list, msg) => {
+const listPlaces = async (list, msg) => {
 	let choices = list.map((item, i) => {
 		return {
 			value: item.id,
-			name: `${i + 1}. `.green + item.desc,
+			name: `${i + 1}. `.green + item.name,
 		};
 	});
 
@@ -100,51 +100,13 @@ const deleteItemFromList = async (list, msg) => {
 	return item;
 };
 
-const confirm = async (message) => {
-	const question = [
-		{
-			type: 'confirm',
-			name: 'ok',
-			message
-		}
-	];
 
-	console.log('\n');
 
-	const { ok } = await inquirer.prompt(question);
 
-	return ok;
-}
-
-const completeTasksFromList = async (list) => {
-	let choices = list.map((item, i) => {
-		return {
-			value: item.id,
-			name: `${i + 1}. `.green + item.desc,
-			checked: (item.completed) ? true : false
-		};
-	});
-
-	const question = [
-		{
-			type: 'checkbox',
-			name: 'ids',
-			message: 'Select the tasks that you want to complete'.green,
-			choices,
-		},
-	];
-
-	console.log('\n');
-	const { ids } = await inquirer.prompt(question);
-
-	return ids;
-};
 
 module.exports = {
 	inquirerMenu,
 	inquirerPause,
 	readInput,
-	deleteItemFromList,
-	confirm,
-	completeTasksFromList
+	listPlaces
 };

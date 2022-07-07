@@ -1,40 +1,26 @@
 require('colors');
-const Searches = require('./models/searches');
+require('dotenv').config();
 
-const {inquirerMenu, inquirerPause, readInput} = require('./helpers/inquirer');
+const {inquirerMenu, inquirerPause} = require('./helpers/inquirer');
+const {selectCity, showHistory} = require("./helpers/actions");
 
 const main = async () => {
-
-    const searches = new Searches();
     let opt;
     do {
         opt = await inquirerMenu();
 
         switch (opt) {
             case 1:
-                //Show message
-                const place = await readInput('Search a city: ');
-                await searches.city( place );
-                //Search places
-
-                //Select a place
-
-                //Weather
-
-                //Show results
-                console.log('\nCity information\n'.green);
-                console.log('City: ',);
-                console.log('Lat: ',);
-                console.log('Lng: ',);
-                console.log('Temperature: ',);
-                console.log('Min.: ',);
-                console.log('Max.: ',);
+                await selectCity();
                 break;
+            case 2:
+                await showHistory();
+                break;
+            default:
+                console.log('Select a valid option'.red);
         }
-
         if (opt !== 0) await inquirerPause();
     } while (opt !== 0);
-
 };
 
 main();
