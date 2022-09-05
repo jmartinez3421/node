@@ -1,45 +1,95 @@
-const { response } = require('express');
+const {response} = require('express');
 
-const getUser = (req, res= response) => {
+const {User} = require('../db/models');
+const { Correct, serverErrorResponse } = require('../messages');
+const {cryptPassword} = require("../helpers");
 
-    const { q, name = 'No name', apiKey, page = 1, limit = 10 } = req.query;
+const getUser = async (req, res = response) => {
 
-    res.status(200).json({
-        msg: 'get API - Controller',
-        q,
-        name,
-        apiKey,
-        page,
-        limit
-    });
+    const {limit = 5, from = 0} = req.query;
+    const status = true;
+
+    try{
+        const [numberOfUsers, users] = await Promise.all([
+            User.countDocuments({status}),
+            User.find({status})
+                .skip(Number(from))
+                .limit(Number(limit))
+        ]);
+
+        res.status(200).json({
+            numberOfUsers,
+            users
+        });
+    }catch (err){
+        console.log(err);
+        serverErrorResponse(res);
+    }
 }
 
-const putUser = (req, res= response) => {
+const putUser = async (req, res = response) => {
 
     //Always comes as a String
-    const { id } = req.params;
+    const {id} = req.params;
 
-    res.status(200).json({
-        msg: 'put API - Controller',
-        id
-    });
+    const {_id, newPassword, google, email, ...other} = req.body;
+
+    try{
+        if (newPassword) {
+            other.password = cryptPassword(newPassword);
+        }
+
+        const user = await User.findByIdAndUpdate(id, other);
+
+        res.status(200).json({
+            msg: Correct.updateUser,
+            user
+        });
+    }catch(err){
+        console.log(err);
+        serverErrorResponse(res);
+    }
 }
 
-const postUser = (req, res= response) => {
+const postUser = async (req, res = response) => {
 
-    const { name, age } = req.body;
+    const {name, email, password, role} = req.body;
 
-    res.status(200).json({
-        msg: 'post API - Controller',
-        name,
-        age
-    });
+    try {
+        const user = new User({name, email, password, role});
+
+        user.password = cryptPassword(password);
+
+        //Save the user in DB
+        await user.save();
+
+        res.status(200).json({
+            msg: Correct.createUser,
+            user
+        });
+
+    } catch (err) {
+        console.log(err);
+        serverErrorResponse(res);
+    }
 }
 
-const deleteUser = (req, res= response) => {
-    res.status(200).json({
-        msg: 'delete API - Controller'
-    });
+const deleteUser = async (req, res = response) => {
+
+    const {id} = req.params;
+
+    try {
+        const user = await User.findByIdAndUpdate(id, {status: false});
+
+        res.status(200).json({
+            msg: Correct.deleteUser,
+        });
+    } catch (err) {
+        console.log(err);
+        serverErrorResponse(res);
+    }
+
+
 }
 
 module.exports = {
