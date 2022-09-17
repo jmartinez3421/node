@@ -4,6 +4,7 @@ const {User} = require("../db/models");
 
 const {Errors} = require("../messages");
 const {generateJWT} = require("../helpers/generateJWT");
+const {googleVerify} = require("../helpers/google-verify");
 
 
 const login = async (req, res) => {
@@ -44,6 +45,51 @@ const login = async (req, res) => {
     }
 }
 
+const googleLogin = async (req, res) => {
+
+    const { id_token } = req.body;
+
+    try{
+        const {name, img, email} = await googleVerify(id_token);
+
+        let user = await User.findOne({email});
+        if(!user){
+            //Create a new user
+            const data = {
+                name,
+                email,
+                password: ':)',
+                img,
+                google: true
+            };
+
+            user = new User(data);
+            await user.save();
+        }
+
+        if(!user.status){
+            return res.status(401).json({
+                msg: Errors.inactive
+            })
+        }
+
+        const token = await generateJWT(user.id);
+
+        res.json({
+            user,
+            token
+        });
+    }catch(err){
+        console.log(err);
+        res.status(400).json({
+            msg: Errors.invalidJwt
+        })
+    }
+
+
+}
+
 module.exports = {
-    login
+    login,
+    googleLogin
 }

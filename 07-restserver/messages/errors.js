@@ -6,7 +6,8 @@ const Errors = {
     emailOrPass: 'The email or password is incorrect',
     jwtGenError: `The token couldn't be generated`,
     noJwt: `There is no token in the petition`,
-    invalidJwt: `Invalid token`
+    invalidJwt: `Invalid token`,
+    inactive: `This user is not active`
 }
 
 module.exports = Errors;

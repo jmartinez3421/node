@@ -17,8 +17,9 @@ const UserSchema = Schema({
     img: String,
     role: {
         type: String,
-        required: [true, 'The role is required'],
-        enumerable: ['ADMIN_ROLE', 'USER_ROLE']
+        default: 'USER_ROLE'
+        // required: [true, 'The role is required'],
+        // enumerable: ['ADMIN_ROLE', 'USER_ROLE']
     },
     status: {
         type: Boolean,

@@ -8,6 +8,12 @@ const LoginValidators = [
     isValid
 ];
 
+const GoogleValidators = [
+    check('id_token', 'id_token is required').notEmpty(),
+    isValid
+]
+
 module.exports = {
-    LoginValidators
+    LoginValidators,
+    GoogleValidators
 }
