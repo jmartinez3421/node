@@ -1,6 +1,6 @@
 const bcryptjs = require('bcryptjs');
 
-const {Role, User} = require("../db/models");
+const {Role, User, Category, Product} = require("../db/models");
 
 const validRole = async(role = '') => {
     const roleExists = await Role.findOne({role});
@@ -23,18 +23,24 @@ const noExistsEmail = async(email = '') => {
     }
 }
 
-const existsId = async(id = '') => {
+const existsUserId = async(id = '') => {
     const existsId = await User.findById(id);
     if(!existsId){
         throw new Error(`The id ${id} doesn't exists`);
     }
 }
 
-const checkUserPassword = async(password = '', user) => {
-    //TODO: When we have the JWT we check if the password is the same that we have in the server
-    const validPassword = bcryptjs.compareSync(password, user);
-    if(!validPassword){
-        throw new Error(`The password doesn't match`);
+const existsCategoryId = async(id = '') => {
+    const existsId = await Category.findById(id);
+    if(!existsId){
+        throw new Error(`The id ${id} doesn't exists`);
+    }
+}
+
+const existsProductId = async(id = '') => {
+    const existsId = await Product.findById(id);
+    if(!existsId){
+        throw new Error(`The id ${id} doesn't exists`);
     }
 }
 
@@ -42,5 +48,7 @@ module.exports = {
     validRole,
     existsEmail,
     noExistsEmail,
-    existsId
+    existsUserId,
+    existsCategoryId,
+    existsProductId
 }

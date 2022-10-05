@@ -1,6 +1,6 @@
 const {check, param, query} = require('express-validator')
 
-const {emptyOrRole, emptyOrStrongPassword, emptyOrNumber, validRole, existsEmail, existsId} = require("../../helpers");
+const {emptyOrRole, emptyOrStrongPassword, emptyOrNumber, validRole, existsEmail, existsUserId} = require("../../helpers");
 const {isValid, JWTValidator, isAdmin, hasRole} = require("../../middlewares");
 
 const UserPostValidators = [
@@ -17,7 +17,7 @@ const UserPutValidators = [
     JWTValidator,
     //TODO: The user can only be modified by itself or by the admin
     param('id', 'The id must be a valid Mongo Id').isMongoId(),
-    param('id').custom(existsId),
+    param('id').custom(existsUserId),
     check('password').custom(emptyOrStrongPassword),
     check('role').custom(emptyOrRole),
     isValid
@@ -36,7 +36,7 @@ const UserDeleteValidators = [
     // isAdmin,
     hasRole('ADMIN_ROLE'),
     param('id', 'The id must be a valid Mongo Id').isMongoId(),
-    param('id').if(param('id').isMongoId()).custom(existsId),
+    param('id').if(param('id').isMongoId()).custom(existsUserId),
     isValid
 ];
 

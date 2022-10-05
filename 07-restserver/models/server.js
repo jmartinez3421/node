@@ -4,8 +4,14 @@ const {dbConnection} = require("../db/config");
 
 class Server {
     port = process.env.PORT;
-    userPath = '/api/user';
-    authPath = '/api/auth';
+    paths = {
+        user: '/api/user',
+        auth: '/api/auth',
+        categories: '/api/categories',
+        product: '/api/products',
+        search: '/api/search'
+    }
+
 
     constructor() {
         this.app = express();
@@ -37,8 +43,11 @@ class Server {
 
     routes() {
         //User routes
-        this.app.use(this.userPath, require('../routes/user'));
-        this.app.use(this.authPath, require('../routes/auth'));
+        this.app.use(this.paths.user, require('../routes/user'));
+        this.app.use(this.paths.auth, require('../routes/auth'));
+        this.app.use(this.paths.categories, require('../routes/category'));
+        this.app.use(this.paths.product, require('../routes/product'));
+        this.app.use(this.paths.search, require('../routes/search'));
     }
 
     listen() {
